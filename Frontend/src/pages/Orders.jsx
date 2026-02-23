@@ -1,7 +1,7 @@
 import React from "react";
 
 function Orders(){
-    return(<>
+    return(<>git push -u origin main
     </>);
 }
 

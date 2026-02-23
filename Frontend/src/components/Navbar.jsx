@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router";
+import { ShopContext } from "../context/ShopContext";
 function NavBar() {
     const [visible,setVisible] = useState(false);
+    const {setShowSearch,getCartCount} = useContext(ShopContext);
     return (
         <div className="flex items-center justify-between py-5 font-medium">
             <Link to="/"><p>FOREVER</p></Link>
@@ -24,7 +26,7 @@ function NavBar() {
                 </NavLink>
             </ul>
             <div className="flex items-center gap-6">
-                 <img src="search-outline-svgrepo-com.svg" className="w-6 cursor-pointer" alt="" />
+                 <img onClick={()=>{setShowSearch(true)}} src="search-outline-svgrepo-com.svg" className="w-6 cursor-pointer" alt="" />
                  <div className="relative group">
                     <img src="profile-svgrepo-com.svg" className="w-6 cursor-pointer" alt="" />
                     <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
@@ -37,7 +39,7 @@ function NavBar() {
                  </div>
                  <Link to="/cart" className="relative">
                     <img src="shopping-cart-outline-svgrepo-com.svg" className="w-6 min-w-6" alt="" />
-                    <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[11px]">1</p>
+                    <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[11px]">{getCartCount()}</p>
                  </Link>
                  <img onClick={()=>setVisible(true)} src="menu-alt-2-svgrepo-com.svg" className="w-8 cursor-pointer sm:hidden" alt="" />
             </div>
