@@ -5,8 +5,8 @@ import { ShopContext } from '../context/ShopContext'
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { backendUrl } from '../../../admin/src/App';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const Verify = () => {
     const {navigate,token,setCartItems} = useContext(ShopContext);
     const [searchParams,setSearchParams] = useSearchParams();
