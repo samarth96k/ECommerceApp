@@ -60,11 +60,11 @@ function Login() {
                 <p className="cursor-pointer">Forgot Your Passowrd?</p>
                 {
                     currentState==='Login'?
-                    <p className="cursor-pointer" onClick={()=>setCurrentState("Sign Up")}>Create Account</p>:
+                    <p className="cursor-pointer" onClick={()=>setCurrentState("SignUp")}>Create Account</p>:
                     <p className="cursor-pointer" onClick={()=>setCurrentState("Login")}>Login Here</p>
                 }
             </div>
-            <button className="bg-black text-white font-light px-12 py-2 mt-4">{currentState==='Login'?"Sign In":"Sign Up"}</button>
+            <button className="bg-black text-white font-light px-12 py-2 mt-4">{currentState==='Login'?"Sign In":"SignUp"}</button>
         </form>
 
     </>);
