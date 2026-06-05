@@ -9,33 +9,13 @@ const deliveryCharge = 10;
 //gateway intitilaise
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const razorpayInstance = new razorpay({
-    key_id : process.env.Razorpay_Test_API_Key,
-    key_secret : process.env.Razorpay_Test_Key_Secret
+    key_id : process.env.
+    key_secret : process.env.
 })
 
 //placing order using COD Method
 const placeOrder = async(req,res)=>{
-    try {
-        const {userId, items, amount, address} = req.body;
-        const orderData = {
-            userId,items,address,amount,paymentMethod:"COD",
-            payment:false,
-            date:Date.now()
-        }
-        const newOrder = new orderModel(orderData);
-        await newOrder.save();
-        await userModel.findByIdAndUpdate(userId,{cartData:{}});
-        res.json({success:true,message:"Order Placed"});
-
-    } catch (error) {
-        console.log(error);
-        res.json({success:false,message:error.message});
-    }
-}
-
-//placing order using Stripe Method
-const placeOrderStripe  = async(req,res)=>{
-    try {
+ try {
         const {userId, items, amount, address} = req.body;
         const {origin} = req.headers;
         console.log(origin);
@@ -78,6 +58,27 @@ const placeOrderStripe  = async(req,res)=>{
         console.log(error);
         res.json({success:false,message:error.message});        
     }
+}
+
+//placing order using Stripe Method
+const placeOrderStripe  = async(req,res)=>{
+        try {
+        const {userId, items, amount, address} = req.body;
+        const orderData = {
+            userId,items,address,amount,paymentMethod:"COD",
+            payment:false,
+            date:Date.now()
+        }
+        const newOrder = new orderModel(orderData);
+        await newOrder.save();
+        await userModel.findByIdAndUpdate(userId,{cartData:{}});
+        res.json({success:true,message:"Order Placed"});
+
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:error.message});
+    }
+   
 }
 
 //verify stripe
@@ -180,4 +181,4 @@ const updateStatus = async (req,res)=>{
     }
 }
 
-export {verifyRazorpay,verifyStripe,placeOrder,placeOrderStripe,placeOrderRazorpay,allOrders,userOrders,updateStatus};
+export {,verifyStripe,,placeOrderStripe,placeOrderRazorpay,allOrders,userOrders,updateStatus};
