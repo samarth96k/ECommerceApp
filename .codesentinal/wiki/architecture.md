@@ -40,3 +40,19 @@ When reviewing Pull Requests, please adhere to the following guidelines:
 *   **Frontend/Admin:** Ensure that updates to `main.jsx` do not violate rules defined in the corresponding `eslint.config.js`.
 *   **Automation:** Changes to `SAMEREPOPR.yml` must be reviewed for security implications regarding GitHub API permissions and automated PR behavior.
 *   **Dependencies:** Any changes to `package.json` or `package-lock.json` in the backend should be audited for security vulnerabilities.
+
+---
+
+## Repository Memory Entry
+
+Memory ID: a254027955ac
+
+Created At: 2026-06-06T09:51:15.659Z
+
+### Reason
+
+Order management transition to structured design patterns.
+
+### Knowledge
+
+Order processing has moved to a layered architecture: OrderRepository handles database operations, PaymentFactory manages provider instantiation, and OrderService coordinates the workflow. New payment methods must now implement the process() interface and be registered in the PaymentFactory.
