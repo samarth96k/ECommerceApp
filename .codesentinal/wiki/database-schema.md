@@ -46,3 +46,19 @@ The expected payload shape for the `/orders` POST endpoint.
 ***
 
 **Please paste your contract files below to begin.**
+
+---
+
+## Repository Memory Entry
+
+Memory ID: 9516d118ab58
+
+Created At: 2026-06-06T09:51:15.660Z
+
+### Reason
+
+Interface changes for order processing.
+
+### Knowledge
+
+Payment provider process methods now return standardized objects: { success: boolean, message?: string, orderId?: string, session_url?: string, order?: object }.
