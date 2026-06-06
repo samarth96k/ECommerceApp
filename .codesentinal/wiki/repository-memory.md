@@ -9,17 +9,17 @@ Document major architectural decisions.
 ---
 
 
-### Memory ID: a1f0d6932ff2
+### Memory ID: a7a3072976b5
 
-Created At: 2026-06-06T09:51:15.659Z
+Created At: 2026-06-06T09:51:15.660Z
 
 **Reason**
 
-Refactoring order handling to support cleaner integration of payment gateways.
+Decoupling business logic from controllers.
 
 **Knowledge**
 
-Adopted the Factory Pattern for payment providers (COD, Stripe, Razorpay) and a Service Layer for order business logic. Future reviewers should ensure new payment integrations follow the established process(order, origin) contract.
+Authentication, user validation, and user creation logic have been moved from controllers to 'userControllerAddedFunc.js'. Future authentication changes must be performed in this file to maintain consistency.
 
 ---
 
