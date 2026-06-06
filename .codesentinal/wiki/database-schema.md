@@ -51,14 +51,14 @@ The expected payload shape for the `/orders` POST endpoint.
 
 ## Repository Memory Entry
 
-Memory ID: 9516d118ab58
+Memory ID: baabf68e2a86
 
-Created At: 2026-06-06T09:51:15.660Z
+Created At: 2026-06-06T09:51:15.661Z
 
 ### Reason
 
-Interface changes for order processing.
+Standardizing password handling.
 
 ### Knowledge
 
-Payment provider process methods now return standardized objects: { success: boolean, message?: string, orderId?: string, session_url?: string, order?: object }.
+User passwords are now hashed using bcrypt (12 rounds) during registration. Authentication now requires explicit credential validation via 'authenticateUser' helper.
