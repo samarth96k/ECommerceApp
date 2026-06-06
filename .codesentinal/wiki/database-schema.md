@@ -46,3 +46,19 @@ The expected payload shape for the `/orders` POST endpoint.
 ***
 
 **Please paste your contract files below to begin.**
+
+---
+
+## Repository Memory Entry
+
+Memory ID: baabf68e2a86
+
+Created At: 2026-06-06T09:51:15.661Z
+
+### Reason
+
+Standardizing password handling.
+
+### Knowledge
+
+User passwords are now hashed using bcrypt (12 rounds) during registration. Authentication now requires explicit credential validation via 'authenticateUser' helper.
