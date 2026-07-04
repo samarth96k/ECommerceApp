@@ -30,6 +30,7 @@ Machine learning based recommendation systems can be integrated to:
 
 ## 6. UI/UX Enhancements (DONE)✅
 
+##
 Future improvements may include:
 - Expanding the catalog with a larger variety of products.
 - Adding multiple new categories and subcategories.
