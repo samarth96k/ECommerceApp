@@ -4,14 +4,39 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+import { GoogleLogin } from "@react-oauth/google";
 
 function Login() {
     const [currentState, setCurrentState] = useState("Login");
-    const {token,setToken,navigate,backendURL} = useContext(ShopContext);
+    const {token,setToken,navigate,backendURL,user,setUser} = useContext(ShopContext);
     // console.log(import.meta.env.VITE_BACKEND_URL);
     const [name,setName] = useState("");
     const [password,setPassword] = useState("");
     const [email,setEmail] = useState("");
+    const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+            console.log("Backend URL:", backendURL);
+            console.log("Request URL:", backendURL + "/api/user/google-login");
+            const response = await axios.post(
+                backendURL + "/api/user/google-login",
+                {
+                    token: credentialResponse.credential,
+                }
+            );
+
+            if (response.data.success) {
+                setToken(response.data.token);
+                localStorage.setItem("token", response.data.token);
+                setUser(response.data.user);
+                toast.success("Logged in with Google");
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Google Login Failed");
+        }
+    };
     const onSubmitHandler = async (event)=>{
         event.preventDefault();
         try {
@@ -19,6 +44,7 @@ function Login() {
                 const response = await axios.post(backendURL+"/api/user/register",{name,email,password});
                 if(response.data.success){
                     setToken(response.data.token);
+                    setUser(response.data.user);
                     localStorage.setItem("token",response.data.token);
                 }else{
                     toast.error(response.data.message); 
@@ -27,6 +53,7 @@ function Login() {
                 const response = await axios.post(backendURL+"/api/user/login",{email,password});
                 if(response.data.success){
                     setToken(response.data.token);
+                    setUser(response.data.user);
                     localStorage.setItem("token",response.data.token);
                     toast.success("Successful Login");
                     
@@ -65,6 +92,12 @@ function Login() {
                 }
             </div>
             <button className="bg-black text-white font-light px-12 py-2 mt-4">{currentState==='Login'?"Sign In":"SignUp"}</button>
+                <div className="w-full flex justify-center mt-1">
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => toast.error("Google Login Failed")}
+                    />
+                </div>
         </form>
 
     </>);

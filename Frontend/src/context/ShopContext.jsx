@@ -15,6 +15,7 @@ const ShopContextProvider=(props) =>{
     const [products,setProducts] = useState([]);
     const [token,setToken] = useState("");
     const navigate = useNavigate();
+    const [user,setUser] = useState(null);
 
     const addToCart = async(itemId,size)=>{
 
@@ -107,16 +108,51 @@ const ShopContextProvider=(props) =>{
         }
     }
 
+    const loadUser = async (token) => {
+            try {
+
+                const response = await axios.post(
+                        backendURL + "/api/user/profile",
+                        {},                  // Empty request body
+                        {
+                            headers: {
+                                token
+                            }
+                        }
+                    );
+
+                if (response.data.success) {
+
+                    setUser(response.data.user);
+
+                } else {
+
+                    toast.error(response.data.message);
+
+                }
+
+            } catch (error) {
+
+                console.log(error);
+
+                toast.error(error.message);
+
+            }
+
+        }
     useEffect(()=>{
         getProductData();
     },[]);
 
-    useEffect(()=>{
-        if(!token && localStorage.getItem("token")){
-            setToken(localStorage.getItem("token"));
-            getUserCartt(localStorage.getItem("token"))
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken) {
+            setToken(storedToken);
+            getUserCartt(storedToken);
+            loadUser(storedToken);
         }
-    })
+
+    }, []);
 
     // const getCartAmount = ()=>{
     //     let totalAmount = 0;
@@ -164,7 +200,7 @@ const getCartAmount = () => {
         search,setSearch,showSearch,setShowSearch,
         cartItems,addToCart,setCartItems,
         getCartCount,updateQuantity,getCartAmount,navigate, backendURL,
-        token,setToken
+        token,setToken,user,setUser
     };
     return (
         <ShopContext.Provider value={value}>
