@@ -2,24 +2,9 @@
 
 The following features and improvements can be implemented in future versions of the project to enhance functionality, scalability, and user experience.
 
-## 1. Dynamic Reviews and Ratings System
-Currently, product reviews and ratings are hardcoded. In future versions, a fully dynamic review system can be implemented where:
-- Users can submit ratings and reviews for purchased products.
-- Average product ratings are calculated automatically.
-- Reviews are stored and fetched from the database.
-- Features like edit/delete review, verified purchase badges, and review sorting can be added.
+## 1. Dynamic Reviews and Ratings System (DONE)✅
 
-## 2. User Profile Management
-The current profile functionality can be expanded to provide a more personalized user experience. Future improvements may include:
-- Dedicated user profile dashboard.
-- Displaying user information after clicking on profile.
-- Adding editable fields such as:
-  - Gender/Sex
-  - Date of Birth
-  - Phone Number
-  - Profile Picture
-  - Saved Addresses
-- Order history and account settings integration.
+## 2. User Profile Management (DONE)✅
 
 ## 3. Delivery Partner Portal
 A separate delivery partner login system can be introduced similar to the admin login panel. This module can include:
@@ -43,18 +28,7 @@ Machine learning based recommendation systems can be integrated to:
 - Suggest trending or related products.
 - Improve personalization for users.
 
-## 6. UI/UX Enhancements
-The user interface of the application can be further improved to provide a more modern and interactive experience. Future upgrades may include:
-- Improved responsive design for all screen sizes.
-- Better animations and transitions.
-- Dark mode support.
-- Improved product cards and filtering UI.
-- Enhanced dashboard and profile layouts.
-- Better loading states and skeleton screens.
-- More accessible and user-friendly navigation.
-
-## 7. More Products and Dynamic Categories
-Currently, several product categories and subcategories are hardcoded within the application. In future versions, the platform can be expanded by introducing more products and storing all category-related information dynamically in the database.
+## 6. UI/UX Enhancements (DONE)✅
 
 Future improvements may include:
 - Expanding the catalog with a larger variety of products.
