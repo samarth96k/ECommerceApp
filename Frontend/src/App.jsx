@@ -12,7 +12,7 @@ import Product from "./pages/Product.jsx";
 import NavBar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import SearchBar from "./components/SearchBar.jsx";
-import Verify from "./pages/verify.jsx";
+// import Verify from "./pages/verify.jsx";
 import { ToastContainer, toast } from 'react-toastify';
 import MyProfilePage from "./pages/MyProfilePage.jsx"
 
@@ -32,7 +32,7 @@ const App = () =>{
         <Route path="/login" element={<Login />}/>
         <Route path="/place-order" element={<PlaceOrder />}/>
         <Route path="/orders" element={<Orders />}/>
-        <Route path="/verify" element={<Verify />}/>
+        {/* <Route path="/verify" element={<Verify />}/> */}
         <Route path="/MyProfile" element={<MyProfilePage />} />
       </Routes>
       <Footer />

@@ -3,11 +3,12 @@ import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import { OAuth2Client } from "google-auth-library";
+import logger from "../utils/logger.js";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const createToken = (id)=>{
-    return jwt.sign({id},process.env.jwt_Secret);
+    return jwt.sign({id},process.env.jwt_Secret,{expiresIn:"30m"});
 }
 
 //route for User Login
@@ -30,7 +31,7 @@ const loginUser = async (req,res)=>{
             res.json({success:false,message:"Invalid credentials"});
         }
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         res.json({success:false,message:error.message});
     }
 }
@@ -58,12 +59,13 @@ const registerUser = async(req,res)=>{
             name,email,password:hashedPassword
         })
         const user = await newUser.save();
+        const token = createToken(user._id);
         const safeUser = await userModel
                               .findById(user._id)
                                 .select("-password");
         res.json({success:true,token,"user":safeUser});
     }catch(error){
-        console.log(error);
+        logger.error(error);
         res.json({success:false,message:error.message});
     }
 }
@@ -138,7 +140,7 @@ const getUserProfile = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
         return res.json({
             success: false,
@@ -209,7 +211,7 @@ const updateUserProfile = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
         return res.json({
 
@@ -294,7 +296,7 @@ const addAddress = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
         return res.json({
 
@@ -366,7 +368,7 @@ const setDefaultAddress = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
         return res.json({
 
@@ -460,7 +462,7 @@ const updateAddress = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
         return res.json({
 
@@ -536,7 +538,7 @@ const deleteAddress = async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        logger.error(error);
 
         return res.json({
 

@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function Orders(){
-    const {backendURL,token,currency} = useContext(ShopContext);
+    const {backendURL,token,currency,handleAuthError} = useContext(ShopContext);
     const [orderData,setOrderData] = useState([]);
     const loadOrderData = async ()=>{
         try{
@@ -25,9 +25,13 @@ function Orders(){
                 })
                 setOrderData(allOrdersItem.reverse());
             }
-        }catch{
+        }catch(error){
 
-        }
+    if(handleAuthError(error)) return;
+
+    console.log(error);
+
+}
     }
     useEffect(()=>{
         loadOrderData()

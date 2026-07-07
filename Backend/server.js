@@ -8,24 +8,32 @@ import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import cartRouter from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoute.js";
+import helmet from "helmet";
+import logger from "./utils/logger.js";
 
 //App Config
 const app = express();
+app.use(helmet());
 const port = process.env.PORT||4000;
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    process.env.FRONTEND_PRODUCTION_URL
+];
 connectDB();
 connectCloudinary();
 // middlewares
-app.use(express.json());
-app.use(cors());
+app.use((req, res, next) => {
+    if (req.originalUrl === "/api/order/webhook") {return next();}
+    express.json()(req, res, next);
+});
+app.use(cors({origin: allowedOrigins}));
 
 //api endpoints
 app.use("/api/user",userRouter);
 app.use("/api/product",productRouter);
 app.use("/api/cart",cartRouter);
 app.use("/api/order",orderRouter);
+app.get("/",(req,res)=>{res.send("API Working");})
 
-app.get("/",(req,res)=>{
-    res.send("API Working");
-})
-
+logger.info("Server Started");
 app.listen(port,()=>console.log("PORT STARTED"));

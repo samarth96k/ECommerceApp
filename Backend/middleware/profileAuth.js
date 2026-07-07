@@ -1,6 +1,6 @@
 
 import jwt from "jsonwebtoken";
-
+import logger from "../utils/logger.js";
 const profileAuth = async (req, res, next) => {
 
     try {
@@ -24,16 +24,24 @@ const profileAuth = async (req, res, next) => {
 
         next();
 
-    } catch (error) {
+    } catch(error){
 
-        console.log(error);
+    logger.error(error);
 
-        return res.json({
-            success: false,
-            message: error.message
+    if(error.name === "TokenExpiredError"){
+        return res.status(401).json({
+            success:false,
+            expired:true,
+            message:"Session expired. Please login again."
         });
-
     }
+
+    return res.status(401).json({
+        success:false,
+        message:"Invalid token. Please login again."
+    });
+
+}
 
 }
 
