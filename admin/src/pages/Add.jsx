@@ -17,6 +17,9 @@ const Add = ({token}) => {
   const [subCategory,setSubCategory] = useState("Casual");
   const [bestSeller,setBestSeller] = useState(false);
   const [sizes,setSizes] = useState([]);
+const [stock, setStock] = useState(0);
+const [color, setColor] = useState("");
+const [tags, setTags] = useState("");
 
   const onSubmitHandler = async(e)=>{
     e.preventDefault();
@@ -29,6 +32,9 @@ const Add = ({token}) => {
       formData.append("subcategory",subCategory);
       formData.append("bestSeller",bestSeller);
       formData.append("sizes",JSON.stringify(sizes));
+      formData.append("stock", stock);
+formData.append("color", color);
+formData.append("tags", tags);
       image1 && formData.append("image1",image1);
       image2 && formData.append("image2",image2);
       image3 &&formData.append("image3",image3);
@@ -45,6 +51,9 @@ const Add = ({token}) => {
         setimage2(false);
         setimage3(false);
         setimage4(false);
+        setStock(0);
+setColor("");
+setTags("");
       }else{
         toast.error(response.data.message);
       }
@@ -116,6 +125,45 @@ const Add = ({token}) => {
             <p className='mb-2'>Product Price</p>
             <input onChange={(e)=>{setprice(e.target.value)}} value = {price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" required placeholder='' />
           </div>
+          <div>
+    <p className='mb-2'>Stock</p>
+
+    <input
+        type="number"
+        value={stock}
+        onChange={(e)=>setStock(e.target.value)}
+        className='w-full px-3 py-2 sm:w-[120px]'
+        required
+    />
+</div>
+<div>
+    <p className='mb-2'>Color</p>
+
+    <input
+        type="text"
+        value={color}
+        onChange={(e)=>setColor(e.target.value)}
+        className='w-full px-3 py-2'
+        placeholder='Black'
+    />
+</div>
+<div className='w-full max-w-[500px] mt-4'>
+
+    <p className='mb-2'>Tags</p>
+
+    <input
+        type="text"
+        value={tags}
+        onChange={(e)=>setTags(e.target.value)}
+        className='w-full px-3 py-2'
+        placeholder='Running, Sports, Nike'
+    />
+
+    <p className='text-xs text-gray-500 mt-1'>
+        Separate tags using commas.
+    </p>
+
+</div>
         </div>
         <div>
           <p className='mb-2'>Product Sizes</p>
