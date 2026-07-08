@@ -17,7 +17,8 @@ app.use(helmet());
 const port = process.env.PORT||4000;
 const allowedOrigins = [
     process.env.FRONTEND_URL,
-    process.env.FRONTEND_PRODUCTION_URL
+    process.env.FRONTEND_PRODUCTION_URL,
+    process.env.FRONTEND_ADMIN_URL
 ];
 connectDB();
 connectCloudinary();
