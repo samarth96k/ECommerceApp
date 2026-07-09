@@ -1,30 +1,50 @@
 import ai from "../config/gemini.js";
 import redis from "../config/redis.js";
+import logger from "../utils/logger.js";
 
 const REVIEW_SUMMARY_TTL =
     parseInt(process.env.REDIS_SUMMARY_TTL) || 18000;
 
 const generateReviewSummary = async (product) => {
-const start = Date.now();//to be dleted
+
+    const totalStart = performance.now();
+
     const cacheKey = `review_summary:${product._id}`;
 
+    // ---------------- CACHE LOOKUP ----------------
+
+    const redisGetStart = performance.now();
+
     const cachedSummary = await redis.get(cacheKey);
-console.log("Redis GET:", Date.now() - start, "ms");// to be deleted
+
+    const redisGetTime =
+        performance.now() - redisGetStart;
+
     if (cachedSummary) {
-        console.log("Review Summary -> Redis Cache");
+
+        logger.info({
+            event: "review_summary_cache_hit",
+            redisGetMs: redisGetTime.toFixed(2),
+            totalMs: (performance.now() - totalStart).toFixed(2)
+        });
+
         return cachedSummary;
     }
 
-    console.log("Review Summary -> Gemini API");
+    logger.info({
+        event: "review_summary_cache_miss",
+        redisGetMs: redisGetTime.toFixed(2)
+    });
+
+    // ---------------- BUILD PROMPT ----------------
 
     const reviews = product.reviews
         .map(
-            (review) =>
-                `Rating: ${review.rating}/5
-Review: ${review.review}`
+            review =>
+                `Rating: ${review.rating}/5\nReview: ${review.review}`
         )
         .join("\n\n");
-const promptStart = Date.now();// to be deleted
+
     const prompt = `
 You are an AI shopping assistant helping customers understand products before purchasing.
 
@@ -61,18 +81,25 @@ Instructions:
 - Use ONLY the information provided above.uickly understand the product.
 - Use ONLY the information provided above.
 `;
-//to be delete
-console.log("Prompt Build:", Date.now() - promptStart, "ms");
-const geminiStart = Date.now();// to be deleted
+
+    // ---------------- GEMINI ----------------
+
+    const geminiStart = performance.now();
+
     const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash-lite",
         contents: prompt
     });
-console.log("Gemini:", Date.now() - geminiStart, "ms");
-//to be deleted
+
+    const geminiTime =
+        performance.now() - geminiStart;
+
     const summary = response.text.trim();
-//to be deleted 
-const redisSetStart = Date.now();
+
+    // ---------------- REDIS STORE ----------------
+
+    const redisSetStart = performance.now();
+
     await redis.set(
         cacheKey,
         summary,
@@ -81,12 +108,20 @@ const redisSetStart = Date.now();
         }
     );
 
-console.log("Redis SET:", Date.now() - redisSetStart, "ms");
-//to be deleted both of them
-console.log("Total:", Date.now() - start, "ms");
+    const redisSetTime =
+        performance.now() - redisSetStart;
+
+    logger.info({
+        event: "review_summary_generated",
+        geminiMs: geminiTime.toFixed(2),
+        redisSetMs: redisSetTime.toFixed(2),
+        totalMs: (performance.now() - totalStart).toFixed(2)
+    });
 
     return summary;
 
 };
 
 export default generateReviewSummary;
+
+

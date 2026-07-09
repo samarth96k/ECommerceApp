@@ -20,6 +20,7 @@ const razorpayInstance = new razorpay({
 
 //placing order using COD Method
 const placeOrder = async (req, res) => {
+    let newOrder;
     try {
         const { userId, items, amount, address } = req.body;
         const orderData = {
@@ -27,14 +28,17 @@ const placeOrder = async (req, res) => {
             payment: false,
             date: Date.now()
         }
-        const newOrder = new orderModel(orderData);
+        newOrder =  new orderModel(orderData);
         await newOrder.save();
         await processCODOrder(newOrder._id,userId);
         return res.json({ success: true, message: "Order Placed" });
 
     } catch (error) {
+            if (newOrder?._id) {
+        await orderModel.findByIdAndDelete(newOrder._id);
+    }
        logger.error(error);
-        res.json({ success: false, message: error.message });
+        res.status(409).json({ success: false, message: error.message, });
     }
 }
 
